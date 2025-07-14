@@ -1,11 +1,27 @@
 import streamlit as st
 import networkx as nx
 import matplotlib.pyplot as plt
+from sidebar_common import show_sidebar 
+
+
 
 st.set_page_config(page_title="最短経路問題（自作）")
 
+
+st.markdown("""
+    <style>
+    [data-testid="stSidebarNav"] ul {
+        display: none;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+
+show_sidebar()
+
 st.title("🔵 最短経路問題（自作）")
 st.markdown("ノードと辺を自由に追加して、自分だけのグラフを作ろう！")
+
 
 # --- 初期化 ---
 if "graph_sp" not in st.session_state:
