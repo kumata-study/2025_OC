@@ -1,8 +1,22 @@
 import streamlit as st
 import networkx as nx
 import matplotlib.pyplot as plt
+from sidebar_common import show_sidebar 
+
+
+
 
 st.set_page_config(page_title="最短経路問題（固定）")
+
+st.markdown("""
+    <style>
+    [data-testid="stSidebarNav"] ul {
+        display: none;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+show_sidebar()
 
 st.title("🟢 最短経路問題（例題）")
 st.markdown("以下のグラフ上で、**最短経路**を見つけ、その長さ（重みの合計）を入力してください。")
