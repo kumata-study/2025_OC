@@ -1,8 +1,21 @@
 import streamlit as st
 import networkx as nx
 import matplotlib.pyplot as plt
+from sidebar_common import show_sidebar 
+
 
 st.set_page_config(page_title="最大流問題（固定）")
+
+st.markdown("""
+    <style>
+    [data-testid="stSidebarNav"] ul {
+        display: none;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+show_sidebar()
+
 
 st.title("🟢 最大流問題（例題）")
 st.markdown("以下の**有向グラフ**で、**出発点（source）から終点（sink）まで送れる最大の流量**を予想して入力し、「回答」ボタンを押してください。")
