@@ -12,7 +12,7 @@ st.markdown("""
 
 st.set_page_config(page_title="ネットワーク問題体験", layout="centered")
 
-show_sidebar()    # ← 必ずタイトルや本体よりも上でもOK（早い段階で呼び出してもよい）
+show_sidebar()   
 
 st.title("ネットワークの謎を解け！")
 st.subheader("〜最短経路と最大流チャレンジ〜")
