@@ -18,7 +18,7 @@ show_sidebar()
 
 
 st.title("🟢 最大流問題（例題）")
-st.markdown("以下の**有向グラフ**で、**出発点（source）から終点（sink）まで送れる最大の流量**を予想して入力し、「回答」ボタンを押してください。")
+st.markdown("以下の**有向グラフ**で、**出発点から終点まで送れる最大の流量**を予想して入力し、「回答」ボタンを押してください。")
 
 # 有向グラフ + 容量付き
 G = nx.DiGraph()
@@ -49,9 +49,9 @@ if "maxflow_answered" not in st.session_state:
 with st.form("maxflow_form"):
     col1, col2, col3 = st.columns([1, 1, 1.2])
     with col1:
-        source = st.selectbox("出発点（source）", nodes, index=0, key="maxflow_src")
+        source = st.selectbox("出発点", nodes, index=0, key="maxflow_src")
     with col2:
-        target = st.selectbox("終点（sink）", nodes, index=len(nodes)-1, key="maxflow_tgt")
+        target = st.selectbox("終点", nodes, index=len(nodes)-1, key="maxflow_tgt")
     with col3:
         user_flow = st.number_input("最大流量（予想）", min_value=0, step=1, key="maxflow_user_flow")
     submitted = st.form_submit_button("回答")
