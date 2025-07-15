@@ -22,14 +22,13 @@ st.markdown("ノードと容量付きの有向辺を追加して、自分だけ�
 if "digraph_mf" not in st.session_state:
     st.session_state.digraph_mf = nx.DiGraph()
 if "node_counter_mf" not in st.session_state:
-    st.session_state.node_counter_mf = 0  # A=0, B=1, ...
+    st.session_state.node_counter_mf = 0
 
 G = st.session_state.digraph_mf
 
-
-
-# --- ノード追加 ---
-if st.button("＋ ノードを追加"):
+# --- 1. ノード追加ボタン（常に表示） ---
+add_node_clicked = st.button("＋ ノードを追加")
+if add_node_clicked:
     if st.session_state.node_counter_mf < 26:
         node_name = chr(65 + st.session_state.node_counter_mf)
         if node_name not in G:
@@ -41,8 +40,19 @@ if st.button("＋ ノードを追加"):
     else:
         st.error("Zまで追加済みです。これ以上のノードは追加できません。")
 
-# --- 辺追加（容量指定） ---
+# --- 2. グラフ描画（ノードが1つ以上あるとき） ---
+if len(G.nodes) >= 1:
+    st.markdown("#### 🗺️ 現在のグラフ")
+    pos = nx.spring_layout(G, seed=42)
+    plt.figure(figsize=(6, 4))
+    nx.draw(G, pos, with_labels=True, node_color='lightyellow', edge_color='gray', arrows=True)
+    edge_labels = {(u, v): f"{d['capacity']}" for u, v, d in G.edges(data=True)}
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
+    st.pyplot(plt)
+
+# --- 3. 辺追加フォーム（ノードが2つ以上のとき） ---
 if len(G.nodes) >= 2:
+    st.markdown("#### ➕ 有向辺（容量付き）を追加")
     with st.form("add_edge_form_mf"):
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -55,15 +65,8 @@ if len(G.nodes) >= 2:
         if submitted:
             G.add_edge(node1, node2, capacity=capacity)
             st.success(f"辺 {node1} → {node2}（容量: {capacity}）を追加しました。")
+            st.rerun()
 
-# --- グラフ描画 ---
-if G.nodes:
-    pos = nx.spring_layout(G, seed=42)
-    plt.figure(figsize=(6, 4))
-    nx.draw(G, pos, with_labels=True, node_color='lightyellow', edge_color='gray', arrows=True)
-    edge_labels = {(u, v): f"{d['capacity']}" for u, v, d in G.edges(data=True)}
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
-    st.pyplot(plt)
 
 
 # --- 回答クイズ形式 ---
