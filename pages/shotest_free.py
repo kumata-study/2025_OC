@@ -28,6 +28,8 @@ if "graph_sp" not in st.session_state:
     st.session_state.graph_sp = nx.Graph()
 if "node_counter_sp" not in st.session_state:
     st.session_state.node_counter_sp = 0
+if "show_edge_form_sp" not in st.session_state:
+    st.session_state.show_edge_form_sp = False  # ← 辺追加フォーム表示フラグ
 
 G = st.session_state.graph_sp
 
@@ -39,13 +41,25 @@ if st.button("＋ ノードを追加"):
             G.add_node(node_name)
             st.session_state.node_counter_sp += 1
             st.success(f"ノード「{node_name}」を追加しました。")
+            if len(G.nodes) >= 2:
+                st.session_state.show_edge_form_sp = True  # ノードが2個以上なら辺追加フォーム解禁
         else:
             st.warning(f"ノード「{node_name}」はすでに存在しています。")
     else:
         st.error("Zまで追加済みです。これ以上のノードは追加できません。")
 
-# --- 辺追加 ---
-if len(G.nodes) >= 2:
+# --- グラフ描画（ノードが1つ以上あれば表示）---
+if len(G.nodes) >= 1:
+    pos = nx.spring_layout(G, seed=42)
+    fig, ax = plt.subplots(figsize=(6, 4))
+    nx.draw(G, pos, with_labels=True, node_color='lightgreen', edge_color='gray', ax=ax)
+    edge_labels = {(u, v): f"{d['weight']:.0f}" for u, v, d in G.edges(data=True)}
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, ax=ax)
+    st.pyplot(fig)
+
+# --- 辺追加フォーム（ノードが2個以上 & フラグがTrueの場合）---
+if st.session_state.show_edge_form_sp and len(G.nodes) >= 2:
+    st.markdown("#### ➕ 辺を追加")
     with st.form("add_edge_form_shortestfree"):
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -58,15 +72,9 @@ if len(G.nodes) >= 2:
         if submitted:
             G.add_edge(node1, node2, weight=weight)
             st.success(f"辺 {node1} ↔ {node2}（重み: {weight}）を追加しました。")
+            st.rerun()  # ← 追加した辺を即座にグラフへ反映
 
-# --- グラフ描画 ---
-if G.nodes:
-    pos = nx.spring_layout(G, seed=42)
-    fig, ax = plt.subplots(figsize=(6, 4))
-    nx.draw(G, pos, with_labels=True, node_color='lightgreen', edge_color='gray', ax=ax)
-    edge_labels = {(u, v): f"{d['weight']:.0f}" for u, v, d in G.edges(data=True)}
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, ax=ax)
-    st.pyplot(fig)
+
 
 # --- 最短経路クイズ ---
 if len(G.nodes) >= 2 and len(G.edges) > 0:
