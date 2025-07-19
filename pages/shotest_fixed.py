@@ -3,6 +3,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import matplotlib  # rcParams設定のため
+import platform
 from sidebar_common import show_sidebar
 
 # --- Streamlit ページ設定 ---
@@ -20,10 +21,26 @@ st.markdown("""
 # --- サイドバー表示 ---
 show_sidebar()
 
-# --- フォント設定（Yu Gothicを明示指定）---
-font_path = "C:/Windows/Fonts/YuGothR.ttc"
-font_prop = fm.FontProperties(fname=font_path)
-matplotlib.rcParams['font.family'] = font_prop.get_name()
+# --- フォント設定（OSごとに分岐） ---
+try:
+    if platform.system() == "Windows":
+        font_path = "C:/Windows/Fonts/YuGothR.ttc"
+    elif platform.system() == "Linux":
+        # Streamlit Cloudではこのあたりが入ってることが多い
+        font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
+    else:
+        font_path = None
+
+    if font_path:
+        font_prop = fm.FontProperties(fname=font_path)
+        matplotlib.rcParams['font.family'] = font_prop.get_name()
+    else:
+        matplotlib.rcParams['font.family'] = 'sans-serif'
+
+except Exception as e:
+    st.warning(f"フォント設定に失敗しました。fallbackフォントを使用します。\n\n詳細: {e}")
+    matplotlib.rcParams['font.family'] = 'sans-serif'
+
 
 # --- タイトル表示 ---
 st.title("🟢 最短経路問題（例題）")
