@@ -1,15 +1,13 @@
 import streamlit as st
 import networkx as nx
 import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
-import matplotlib  # rcParams設定のため
-import platform
-from sidebar_common import show_sidebar
+from sidebar_common import show_sidebar 
 
-# --- Streamlit ページ設定 ---
+
+
+
 st.set_page_config(page_title="最短経路問題（固定）")
 
-# --- サイドバー非表示スタイル（任意）---
 st.markdown("""
     <style>
     [data-testid="stSidebarNav"] ul {
@@ -18,63 +16,32 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# --- サイドバー表示 ---
 show_sidebar()
 
-# --- フォント設定（OSごとに分岐） ---
-try:
-    if platform.system() == "Windows":
-        font_path = "C:/Windows/Fonts/YuGothR.ttc"
-    elif platform.system() == "Linux":
-        # Streamlit Cloudではこのあたりが入ってることが多い
-        font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"
-    else:
-        font_path = None
-
-    if font_path:
-        font_prop = fm.FontProperties(fname=font_path)
-        matplotlib.rcParams['font.family'] = font_prop.get_name()
-    else:
-        matplotlib.rcParams['font.family'] = 'sans-serif'
-
-except Exception as e:
-    st.warning(f"フォント設定に失敗しました。fallbackフォントを使用します。\n\n詳細: {e}")
-    matplotlib.rcParams['font.family'] = 'sans-serif'
-
-
-# --- タイトル表示 ---
 st.title("🟢 最短経路問題（例題）")
 st.markdown("以下のグラフ上で、**最短経路**を見つけ、その長さ（重みの合計）を入力してください。")
 
-# --- 固定グラフ定義 ---
+# 固定グラフの定義
 G = nx.Graph()
 edges = [
-    ("出発地点", "仙北市", 15),
-    ("仙北市", "秋田市", 75),
-    ("仙北市", "大仙市", 40),
-    ("秋田市", "大仙市", 56),
-    ("大仙市", "湯沢市", 45),
-    ("秋田市", "目的地", 42),
-    ("大仙市", "目的地", 50),
-    ("湯沢市", "目的地", 58)
+    ("Start", "Senboku", 15),
+    ("Senboku","Akita",75),
+    ("Senboku","Daisen",40),
+    ("Akita","Daisen",56),
+    ("Daisen","Yuzawa",45),
+    ("Akita","Goal",42),
+    ("Daisen","Goal",50),
+    ("Yuzawa", "Goal", 58)
 ]
 G.add_weighted_edges_from(edges)
 nodes = list(G.nodes)
 
-# --- グラフ描画 ---
+# グラフ全体を常に表示
 pos = nx.spring_layout(G, seed=42)
 plt.figure(figsize=(6, 4))
-nx.draw(
-    G, pos, with_labels=True, node_color='lightblue', edge_color='gray',
-    font_family=font_prop.get_name()
-)
-nx.draw_networkx_edge_labels(
-    G, pos,
-    edge_labels={(u, v): d['weight'] for u, v, d in G.edges(data=True)},
-    font_family=font_prop.get_name()
-)
+nx.draw(G, pos, with_labels=True, node_color='lightblue', edge_color='gray')
+nx.draw_networkx_edge_labels(G, pos, edge_labels={(u, v): d['weight'] for u, v, d in G.edges(data=True)})
 st.pyplot(plt)
-
 
 # セッション初期化
 if "shortest_answered" not in st.session_state:
