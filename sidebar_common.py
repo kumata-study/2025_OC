@@ -13,3 +13,8 @@ def show_sidebar():
     st.sidebar.markdown("## 🔵 実践編")
     st.sidebar.page_link("pages/shotest_free.py", label="最短経路問題（自作グラフ）")
     st.sidebar.page_link("pages/maxflow_free.py", label="最大流問題（自作グラフ）")
+
+    st.sidebar.markdown("---")
+    st.sidebar.markdown("## 🟡 ランダム問題")
+    st.sidebar.page_link("pages/shotest_random.py", label="最短経路問題（ランダム）")
+    st.sidebar.page_link("pages/maxflow_random.py", label="最大流問題（ランダム）")

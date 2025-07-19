@@ -28,4 +28,7 @@ st.page_link("pages/shotest_free.py", label="最短経路問題（自作グラ�
 st.page_link("pages/maxflow_free.py", label="最大流問題（自作グラフ）")
 
 
+st.markdown("### 🟡 ランダム問題")
+st.page_link("pages/shotest_random.py", label="最短経路問題（ランダム）")
 
+st.page_link("pages/maxflow_random.py", label="最大流問題（ランダム）")
