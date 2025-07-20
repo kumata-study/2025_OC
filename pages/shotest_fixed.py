@@ -66,14 +66,14 @@ with st.form("shortest_path_form"):
             step=1,
             key="shortest_user_length"
         )
-    submitted = st.form_submit_button("回答")
+    submitted = st.form_submit_button("解答")
     if submitted:
         st.session_state.shortest_answered = True
         st.session_state.shortest_source = source
         st.session_state.shortest_target = target
 
 if not st.session_state.shortest_answered:
-    st.info("グラフを見て、最短経路の長さを計算し、入力してから『回答』ボタンを押してください。")
+    st.info("グラフを見て、最短経路の長さを計算し、入力してから『解答』ボタンを押してください。")
 
 if st.session_state.shortest_answered:
     source = st.session_state.shortest_source
