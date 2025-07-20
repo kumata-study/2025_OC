@@ -85,9 +85,9 @@ if st.session_state.graph_generated:
 
             st.markdown(f"#### 出発点:  {src}　→　到達点:  {tgt}")
 
-            # 回答フォーム
+            # 解答フォーム
             user_guess = st.number_input("最短経路の長さ（予想）", min_value=0, step=1)
-            if st.button("回答する"):
+            if st.button("解答する"):
                 if user_guess == length:
                     st.success("正解です！🎉")
                 else:
