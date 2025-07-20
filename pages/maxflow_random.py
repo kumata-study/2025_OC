@@ -114,9 +114,9 @@ if st.session_state.graph_generated:
 
         st.markdown(f"#### 出発点: 🚩 {source}　→　終点: 🎯 {target}")
 
-        # ✅ 🔼 ここに移動：最大流の予想と回答ボタン
+        # ✅ 🔼 ここに移動：最大流の予想と解答ボタン
         user_guess = st.number_input("最大流量の予想を入力", min_value=0, step=1)
-        if st.button("回答する"):
+        if st.button("解答する"):
             correct = st.session_state.flow_value
             if user_guess == correct:
                 st.success("正解です！🎉")
