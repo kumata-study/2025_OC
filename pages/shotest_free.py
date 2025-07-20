@@ -94,14 +94,14 @@ if len(G.nodes) >= 2 and len(G.edges) > 0:
             target = st.selectbox("到達点", list(G.nodes), key=tgt_key)
         with col3:
             user_length = st.number_input("最短経路の長さ（予想）", min_value=0, step=1, key=userlen_key)
-        submitted = st.form_submit_button("回答")
+        submitted = st.form_submit_button("解答")
         if submitted:
             st.session_state[quiz_answered_key] = True
             st.session_state["shortestfree_result_src"] = source
             st.session_state["shortestfree_result_tgt"] = target
 
     if not st.session_state[quiz_answered_key]:
-        st.info("出発点・到達点を選び、最短経路の長さを予想して入力し『回答』ボタンを押してください。")
+        st.info("出発点・到達点を選び、最短経路の長さを予想して入力し『解答』ボタンを押してください。")
 
     if st.session_state[quiz_answered_key]:
         source = st.session_state["shortestfree_result_src"]
