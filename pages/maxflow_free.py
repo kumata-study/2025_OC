@@ -69,7 +69,7 @@ if len(G.nodes) >= 2:
 
 
 
-# --- 回答クイズ形式 ---
+# --- 解答クイズ形式 ---
 if len(G.nodes) >= 2 and len(G.edges) > 0:
     if "maxflow_quiz_answered" not in st.session_state:
         st.session_state.maxflow_quiz_answered = False
@@ -82,14 +82,14 @@ if len(G.nodes) >= 2 and len(G.edges) > 0:
             target = st.selectbox("終点", list(G.nodes), key="maxflowfree_tgt")
         with col3:
             user_flow = st.number_input("最大流量（予想）", min_value=0, step=1, key="maxflowfree_user_flow")
-        submitted = st.form_submit_button("回答")
+        submitted = st.form_submit_button("解答")
         if submitted:
             st.session_state.maxflow_quiz_answered = True
             st.session_state.maxflowfree_source = source
             st.session_state.maxflowfree_target = target
 
     if not st.session_state.maxflow_quiz_answered:
-        st.info("出発点・終点を選び、最大流量を予想して入力し『回答』ボタンを押してください。")
+        st.info("出発点・終点を選び、最大流量を予想して入力し『解答』ボタンを押してください。")
 
     if st.session_state.maxflow_quiz_answered:
         source = st.session_state.maxflowfree_source
